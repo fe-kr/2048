@@ -1,23 +1,20 @@
 import { useWindowDimensions, View, Text } from "react-native";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { MAX_TILES_COUNT } from "../constants";
+import board from "../models/board";
+import { observer } from "mobx-react-lite";
 
-const grid = Array.from({ length: 16 });
-const tiles = [
-  { position: [0, 0], value: 2, id: 2 },
-  { position: [0, 1], value: 2, id: 3 },
-  { position: [1, 1], value: 4, id: 1 },
-  { position: [2, 2], value: 4, id: 11 },
-  { position: [0, 3], value: 2, id: 23 },
-  { position: [3, 3], value: 4, id: 31 },
-];
-
-export default function Board() {
+const Board = () => {
   const styles = useBoardStyles();
+
+  useEffect(() => {
+    board.init();
+  }, []);
 
   return (
     <View className="relative bg-amber-400">
       <View className="absolute z-10 inset-0">
-        {tiles.map(({ id, position, value }) => (
+        {board.data.map(({ id, position, value }) => (
           <View
             key={id}
             className="bg-green-600 rounded justify-center items-center absolute"
@@ -29,7 +26,7 @@ export default function Board() {
       </View>
 
       <View style={styles.board} className="flex-1 flex-wrap rounded">
-        {grid.map((_, i) => (
+        {Array.from({ length: MAX_TILES_COUNT }).map((_, i) => (
           <View style={styles.cell} key={i} className="rounded bg-slate-400" />
         ))}
       </View>
@@ -65,3 +62,5 @@ function useBoardStyles() {
     };
   }, [window.width, window.height]);
 }
+
+export default observer(Board);

@@ -9,7 +9,7 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen
         name="index"
-        options={{ title: "2048", headerRight: Header }}
+        options={{ title: "2048", headerRight: () => <Header /> }}
       />
     </Stack>
   );
