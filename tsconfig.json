@@ -3,17 +3,13 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "src/*": ["./src/*"]
     }
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
+    "./src",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "global.d.ts",
-    "nativewind-env.d.ts"
   ]
 }

@@ -1,12 +1,7 @@
-import { View } from "react-native";
-import Board from "../components/board";
+import { BoardComponent } from "../components/board";
 
-const Root = () => {
-  return (
-    <View>
-      <Board />
-    </View>
-  );
+const Game2048 = () => {
+  return <BoardComponent />;
 };
 
-export default Root;
+export default Game2048;
