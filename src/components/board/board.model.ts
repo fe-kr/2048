@@ -18,8 +18,8 @@ class Board {
     makeObservable(this, { score: observable, isGameOver: observable });
   }
 
-  init() {
-    Array.from({ length: INITIAL_TILES_COUNT }).forEach(() => {
+  init(tilesCount: number = INITIAL_TILES_COUNT) {
+    Array.from({ length: tilesCount }).forEach(() => {
       const [x, y] = this.board.randomizeEmptySlot();
 
       this.board.data[x][y] = new Tile({ value: NEW_TILE_VALUE });
@@ -29,7 +29,7 @@ class Board {
   reset() {
     this.score = 0;
     this.isGameOver = false;
-    this.board.data = this.board.fillEmptySlots(TILE_PER_ROW, TILE_PER_ROW);
+    this.board.data = this.board.fillAllEmptySlots(TILE_PER_ROW, TILE_PER_ROW);
     this.init();
   }
 
@@ -54,6 +54,8 @@ class Board {
   }
 
   moveTiles(direction: Direction) {
+    const prevData = [...this.board.data];
+
     this.board.data = this.mergeAllTiles(direction);
 
     if (this.shouldOverGame()) {
@@ -61,7 +63,7 @@ class Board {
       return;
     }
 
-    if (this.board.hasEmptySlot) {
+    if (this.board.hasEmptySlot && !this.board.checkIsEqual(prevData)) {
       const [x, y] = this.board.randomizeEmptySlot();
 
       this.board.data[x][y] = new Tile({ value: NEW_TILE_VALUE });

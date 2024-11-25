@@ -4,7 +4,7 @@ export class Matrix<T> {
   data: (T | undefined)[][];
 
   constructor(rowCount: number, colCount: number) {
-    this.data = this.fillEmptySlots<T>(rowCount, colCount);
+    this.data = this.fillAllEmptySlots<T>(rowCount, colCount);
 
     makeObservable(this, { data: observable });
   }
@@ -21,6 +21,10 @@ export class Matrix<T> {
     return newArray.map((_, i) => data.map((row) => row[i]).toReversed());
   }
 
+  checkIsEqual<T>(data: T[][]) {
+    return this.data.join("") === data.join("");
+  }
+
   get hasEmptySlot() {
     return !this.data.flat().every(Boolean);
   }
@@ -33,7 +37,7 @@ export class Matrix<T> {
     }, []);
   }
 
-  fillEmptySlots<T>(rowCount: number, colCount: number) {
+  fillAllEmptySlots<T>(rowCount: number, colCount: number) {
     const rows = Array.from({ length: rowCount });
 
     return rows.map<T[]>(() => Array.from({ length: colCount }));

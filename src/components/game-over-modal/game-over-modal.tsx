@@ -13,10 +13,7 @@ const GameOverModal = ({ onClose }: GameOverModalProps) => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Text style={styles.modalText}>GAME OVER</Text>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={onClose}
-          >
+          <Pressable style={styles.button} onPress={onClose}>
             <Text style={styles.textStyle}>Try Again</Text>
           </Pressable>
         </View>

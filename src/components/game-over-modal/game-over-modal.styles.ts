@@ -26,12 +26,7 @@ export const useGameOverModalStyles = () =>
       borderRadius: 20,
       padding: 10,
       elevation: 2,
-    },
-    buttonOpen: {
-      backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-      backgroundColor: "#2196F3",
+      backgroundColor: "#f2b179",
     },
     textStyle: {
       color: "white",
@@ -43,5 +38,6 @@ export const useGameOverModalStyles = () =>
       fontWeight: "bold",
       fontSize: 20,
       textAlign: "center",
+      color: "#776e65",
     },
   });

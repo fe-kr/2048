@@ -10,9 +10,15 @@ export const useBoardStyles = () => {
     boardWidth / TILE_PER_ROW - (BOARD_GAP * TILE_PER_ROW) / (TILE_PER_ROW - 1);
 
   return StyleSheet.create({
+    wrapper: {
+      backgroundColor: "#b59d87",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      flex: 1,
+    },
     container: {
       position: "relative",
-      backgroundColor: "#b59d87",
     },
     board: {
       height: boardWidth,

@@ -1,6 +1,7 @@
-import { Easing, StyleSheet, useWindowDimensions } from "react-native";
+import { StyleSheet, useWindowDimensions } from "react-native";
 import { BOARD_GAP, TILE_COLORS, TILE_PER_ROW } from "src/constants";
 import {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -19,7 +20,7 @@ const useTileDimensions = ([x, y]: number[]) => {
   return {
     width,
     height: width,
-    left: BOARD_GAP + x * (width + BOARD_GAP + 1),
+    left: BOARD_GAP + x * (width + BOARD_GAP),
     top: BOARD_GAP + y * (width + BOARD_GAP),
   };
 };
