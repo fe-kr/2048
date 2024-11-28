@@ -1,5 +1,10 @@
-import { StyleSheet, useWindowDimensions } from "react-native";
-import { BOARD_GAP, TILE_COLORS, TILE_PER_ROW } from "src/constants";
+import { Platform, StyleSheet, useWindowDimensions } from "react-native";
+import {
+  BOARD_GAP,
+  MAX_BOARD_WIDTH,
+  TILE_COLORS,
+  TILE_PER_ROW,
+} from "src/constants";
 import {
   Easing,
   useAnimatedStyle,
@@ -12,15 +17,16 @@ import { useEffect } from "react";
 const useTileDimensions = ([x, y]: number[]) => {
   const window = useWindowDimensions();
 
-  const windowWidth = Math.min(window.width, window.height);
+  const windowWidth = Math.min(window.width, window.height, MAX_BOARD_WIDTH);
   const boardWidth = Math.floor(windowWidth / TILE_PER_ROW) * TILE_PER_ROW;
   const width =
     boardWidth / TILE_PER_ROW - (BOARD_GAP * TILE_PER_ROW) / (TILE_PER_ROW - 1);
+  const leftDiff = Platform.OS === "web" ? 1 : 0;
 
   return {
     width,
     height: width,
-    left: BOARD_GAP + x * (width + BOARD_GAP),
+    left: BOARD_GAP + x * (width + BOARD_GAP + leftDiff),
     top: BOARD_GAP + y * (width + BOARD_GAP),
   };
 };

@@ -18,7 +18,7 @@ const Board = () => {
   const styles = useBoardStyles();
 
   useEffect(() => {
-    board.init(16, 2);
+    board.init();
   }, []);
 
   const isGameLost = board.status === "LOST";

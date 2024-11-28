@@ -1,5 +1,7 @@
 export const BOARD_GAP = 12;
 
+export const MAX_BOARD_WIDTH = 480;
+
 export const TILE_COLORS = [
   "#eee4da",
   "#ede0c8",

@@ -1,10 +1,10 @@
 import { StyleSheet, useWindowDimensions } from "react-native";
-import { BOARD_GAP, TILE_PER_ROW } from "src/constants";
+import { BOARD_GAP, MAX_BOARD_WIDTH, TILE_PER_ROW } from "src/constants";
 
 export const useBoardStyles = () => {
   const window = useWindowDimensions();
 
-  const windowWidth = Math.min(window.width, window.height);
+  const windowWidth = Math.min(window.width, window.height, MAX_BOARD_WIDTH);
   const boardWidth = Math.floor(windowWidth / TILE_PER_ROW) * TILE_PER_ROW;
   const cellWidth =
     boardWidth / TILE_PER_ROW - (BOARD_GAP * TILE_PER_ROW) / (TILE_PER_ROW - 1);
@@ -37,11 +37,6 @@ export const useBoardStyles = () => {
       width: cellWidth,
       borderRadius: 4,
       backgroundColor: "#cebda6",
-    },
-    buttons: {
-      right: 0,
-      position: "absolute",
-      flexDirection: "row",
     },
   });
 };
