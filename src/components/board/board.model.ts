@@ -1,5 +1,6 @@
 import {
   INITIAL_TILES_COUNT,
+  MAX_GAME_SCORE,
   NEW_TILE_VALUE,
   TILE_PER_ROW,
 } from "src/constants";
@@ -7,30 +8,32 @@ import { Tile } from "../tile";
 import { Matrix } from "src/shared/matrix";
 import { makeObservable, observable } from "mobx";
 
-class Board {
+export class Board {
   private board: Matrix<Tile>;
   score: number = 0;
-  isGameOver: boolean = false;
+  status: GameStatus = "PENDING";
 
-  constructor() {
-    this.board = new Matrix(TILE_PER_ROW, TILE_PER_ROW);
+  constructor(board: Matrix<Tile>) {
+    this.board = board;
 
-    makeObservable(this, { score: observable, isGameOver: observable });
+    makeObservable(this, { score: observable, status: observable });
   }
 
-  init(tilesCount: number = INITIAL_TILES_COUNT) {
+  init(
+    tilesCount: number = INITIAL_TILES_COUNT,
+    tileValue: number = NEW_TILE_VALUE,
+  ) {
     Array.from({ length: tilesCount }).forEach(() => {
       const [x, y] = this.board.randomizeEmptySlot();
 
-      this.board.data[x][y] = new Tile({ value: NEW_TILE_VALUE });
+      this.board.data[x][y] = new Tile({ value: tileValue });
     });
   }
 
   reset() {
     this.score = 0;
-    this.isGameOver = false;
+    this.status = "PENDING";
     this.board.data = this.board.fillAllEmptySlots(TILE_PER_ROW, TILE_PER_ROW);
-    this.init();
   }
 
   get data(): ITile[] {
@@ -58,8 +61,15 @@ class Board {
 
     this.board.data = this.mergeAllTiles(direction);
 
+    const maxValue = Math.max(...this.data.map(({ value }) => value));
+
+    if (maxValue >= MAX_GAME_SCORE) {
+      this.status = "WON";
+      return;
+    }
+
     if (this.shouldOverGame()) {
-      this.isGameOver = true;
+      this.status = "LOST";
       return;
     }
 
@@ -102,24 +112,32 @@ class Board {
   mergeTilesInRow(rowData: (Tile | undefined)[], rightToLeft?: boolean) {
     const acc = rightToLeft ? rowData.toReversed() : [...rowData];
 
-    acc.forEach((_, index) => {
-      if (acc[index] && acc[index + 1]) {
-        if (acc[index]!.value !== acc[index + 1]!.value) return;
-
-        const newValue = acc[index].value * 2;
-
-        acc[index + 1] = new Tile({ ...acc[index], value: newValue });
-        acc[index] = undefined;
+    for (let i = 0; i < acc.length - 1; i++) {
+      if (!acc[i]) {
+        continue;
       }
 
-      if (acc[index] && !acc[index + 1] && index < acc.length - 1) {
-        acc[index + 1] = new Tile(acc[index]);
-        acc[index] = undefined;
+      if (acc[i] && !acc[i + 1]) {
+        acc[i + 1] = new Tile(acc[i]!);
+        acc[i] = undefined;
+
+        continue;
       }
-    });
+
+      if (acc[i] && acc[i + 1]) {
+        if (acc[i]!.value !== acc[i + 1]!.value) continue;
+
+        acc[i + 1] = new Tile({ ...acc[i], value: acc[i]!.value * 2 });
+        acc[i] = undefined;
+
+        i = 0; // reset index for prevent unmerged tiles
+      }
+    }
 
     return rightToLeft ? acc.reverse() : acc;
   }
 }
 
-export const board = new Board();
+const matrix = new Matrix<Tile>(TILE_PER_ROW, TILE_PER_ROW);
+
+export const board = new Board(matrix);

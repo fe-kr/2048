@@ -12,4 +12,7 @@ export const TILE_COLORS = [
   "#edc850",
   "#edc53f",
   "#edc22e",
+  "#edc22e",
+  "#edc22e",
+  "#edc22e",
 ];

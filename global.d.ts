@@ -6,6 +6,8 @@ declare global {
   }
 
   type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
+
+  type GameStatus = "PENDING" | "WON" | "LOST";
 }
 
 export {};

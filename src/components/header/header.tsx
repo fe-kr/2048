@@ -7,9 +7,14 @@ import { board } from "../board";
 const Header = () => {
   const styles = useHeaderStyles();
 
+  const onGameRestart = () => {
+    board.reset();
+    board.init();
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => board.reset()}>
+      <TouchableOpacity onPress={onGameRestart}>
         <MaterialIcons name="restart-alt" size={30} color="#f9f6f2" />
       </TouchableOpacity>
 

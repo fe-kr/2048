@@ -18,8 +18,12 @@ const Board = () => {
   const styles = useBoardStyles();
 
   useEffect(() => {
-    board.init(16);
+    board.init(16, 2);
   }, []);
+
+  const isGameLost = board.status === "LOST";
+  const isGameWon = board.status === "WON";
+  const isGameOver = isGameLost || isGameWon;
 
   const onPanGestureEvent = ({
     nativeEvent,
@@ -39,18 +43,20 @@ const Board = () => {
     }
   };
 
+  const onCloseModal = () => {
+    board.reset();
+    board.init();
+  };
+
   return (
     <GestureHandlerRootView>
       <PanGestureHandler
+        enabled={!isGameLost || !isGameWon}
         onGestureEvent={onPanGestureEvent}
         onHandlerStateChange={onPanGestureEvent}
       >
         <View style={styles.wrapper}>
           <View style={styles.container}>
-            {board.isGameOver && (
-              <GameOverModal onClose={() => board.reset()} />
-            )}
-
             <View style={styles.tiles}>
               {board.data.map((data) => (
                 <TileComponent key={data.id} {...data} />
@@ -63,6 +69,13 @@ const Board = () => {
               ))}
             </View>
           </View>
+
+          {isGameOver && (
+            <GameOverModal
+              title={`Congratulations! You are ${isGameWon ? "winner" : "loser"}`}
+              onClose={onCloseModal}
+            />
+          )}
         </View>
       </PanGestureHandler>
     </GestureHandlerRootView>
